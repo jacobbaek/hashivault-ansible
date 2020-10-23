@@ -1,0 +1,12 @@
+---
+- name: generate ssh-key
+  openssh_keypair:
+    path: "~/.ssh/id_rsa"
+    type: rsa
+    state: present
+
+- name: make vault public key
+  shell: '/usr/local/bin/vault write -field=signed_key {{ signer_path }}/sign/{{ ssh_role_name }} public_key=@$HOME/.ssh/id_rsa.pub > ~/.ssh/{{ client_pub_keyname }}'
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+    VAULT_TOKEN: "{{ vault_token }}"

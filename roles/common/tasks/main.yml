@@ -1,0 +1,17 @@
+---
+- name: install packages
+  yum:
+    name: unzip
+    state: latest
+
+- name: Download vault binary
+  get_url:
+    url: "{{ vault_download_url }}"
+    dest: /tmp/vault.zip
+    force: no
+
+- name: unarchive the vault zip file
+  unarchive:
+    src: /tmp/vault.zip
+    dest: /usr/local/bin/
+    remote_src: True

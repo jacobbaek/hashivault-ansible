@@ -1,0 +1,23 @@
+---
+- name: secret enabling
+  shell: '/usr/local/bin/vault secrets enable -path={{ signer_path }} ssh'
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+    VAULT_TOKEN: "{{ vault_token }}"
+
+- name: make vault public key (if you want to existance pub and key, you should run another commands)
+  shell: '/usr/local/bin/vault write {{ signer_path }}/config/ca generate_signing_key=true'
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+    VAULT_TOKEN: "{{ vault_token }}"
+
+- name: make role json file
+  template:
+    src: role.j2
+    dest: "/tmp/role.json"
+
+- name: make vault role 
+  shell: 'vault write {{ signer_path }}/roles/{{ ssh_role_name }} @/tmp/role.json'
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+    VAULT_TOKEN: "{{ vault_token }}"

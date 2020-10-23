@@ -1,0 +1,22 @@
+---
+- name: prepare to run vault 
+  hosts: all
+  become: true
+  roles:
+    - role: roles/common
+
+- name: setup vault secret server
+  hosts: vault
+  roles:
+    - role: roles/vault
+
+- name: setup vault target server
+  hosts: server
+  become: true
+  roles:
+    - { role: roles/server, tags: serveronly }
+
+- name: setup vault client
+  hosts: client
+  roles:
+    - { role: roles/client, tags: clientonly }

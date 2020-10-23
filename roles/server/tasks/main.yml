@@ -1,0 +1,16 @@
+---
+- name: make vault public key 
+  shell: '/usr/local/bin/vault read -field=public_key {{ signer_path }}/config/ca > /etc/ssh/trusted-user-ca-keys.pem'
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+    VAULT_TOKEN: "{{ vault_token }}"
+
+- name: insert trustedusercakeys line at the sshd_config file
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pem"
+    insertafter: EOF
+  notify:
+  - restart sshd
+
+
