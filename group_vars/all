@@ -1,7 +1,7 @@
 ---
 vault_download_url: https://releases.hashicorp.com/vault/1.5.5/vault_1.5.5_linux_amd64.zip
-vault_addr: http://192.168.201.81:8200
-vault_token: s.HkueChqdr2GeyDyR2lvXRC5y
+vault_addr: http://192.168.1.1:8200
+vault_token: s.XXXXXXXXXXXXXXXXXXXXXXx
 signer_path: ssh_signer
 
 ssh_role_name: ssh-role
